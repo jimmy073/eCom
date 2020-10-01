@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<head>
-		<title>eCommerce Account</title>
+		<title>eCommerce Products Categories</title>
 		<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
@@ -23,47 +23,54 @@
     <a class="p-2 text-dark" th:href="@{/registerCategory}">Categories</a>
     <a class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
     <a class="p-2 text-dark" th:href="@{/users}">Users</a>
-
   </nav>
   <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
 </div>
 
 <div class="container">
-	<div class="jumbotron" style="background: rgba(135,206,235, 0.3)">
-		<h2 style="text-align: left; margin-left: 70px">CREATING A USER </h2>
-		
-		<form th:action="@{/saveUser}" method="post" th:object="${user}">
-			<div class="container"> 
-			<h4 style="text-align: left; margin-left: 40px">Personal Info</h4>
-			<div class="form-align" style="margin-top: 10px" >
-				<label>First Name</label>
-				<input class="form-group" th:field="*{firstName}">
-				<label>Last Name</label>
-				<input class="form-group" th:field="*{lastName}">
+	<div class="row">
+		<form method="post" th:action="@{/saveCategory}" th:object="${category}">
+			
+			<div class="jumbotron" style="margin-top: 10%">
+			<div class="form-group">
+			<input th:field="*{id}" hidden="true">
+				<label>Category Name</label>
+				<input th:field="*{categoryName}" class="form-control">
 			</div>
-			<div>
-				<label>Telephone</label>
-				<input class="form-group" th:field="*{telephone}">
+			<div class="form-group">
+				<label>Availability</label>
+				<select th:field="*{available}" class="form-control" style="width: 120px; margin-left: 30px">
+					<option style="color: white; background-color: green" value="Enable">Available</option>
+					<option style="color: white; background-color: red" value="Disable">Disabled</option>
+				</select>
 			</div>
-			<h4 style="text-align: left; margin-left: 40px">Account Info</h4>
-			<div>
-				<label>Username</label>
-				<input class="form-group" placeholder="example@example.com" th:field="*{username}">
-			</div>
-			<div>
-				<label>Password</label>
-				<input class="form-group" type="password">
-				<label>confirm Password</label>
-				<input class="form-group" type="password" th:field="*{password}">
-			</div>
+			
+			<input type="submit" value="Submit" class="btn btn-primary btn-sm">
 		</div>
-		<input type="submit" class="btn btn-success sm" value="Sign up" style="margin-left: 28%">
+		
 		</form>
-				<div th:if="${param.created}">
-                    <div class="alert alert-success">
-                        Account Created Successfully
-                    </div>
-                </div>
+		<div style="margin-top: 1%; margin-left: 8%">
+			<h2 style="center">LIST of CATEGORIES</h2>
+			<table class="table" style="width: 600px" border="1">
+				<thead>
+					<tr>
+						<th>Category Name</th>
+						<th>Availability</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cate:${categories}">
+						<td th:text="${cate.categoryName}"></td>
+						<td th:text="${cate.available}" >
+						</td>
+						<td><a th:href="@{/registerProducts/{id} (id=${cate.id}) }" class="btn btn-info btn-xs">Products</a>
+						<a th:href="@{/editCategory/{id} (id=${cate.id}) }" class="btn btn-warning btn-xs">Edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 	

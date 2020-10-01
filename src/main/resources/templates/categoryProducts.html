@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<title>eCommerce Category Products</title>
+		<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h3 class="my-0 mr-md-auto font-weight-normal"><a th:href="@{/}">
+  	eCommerce
+  </a></h3>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 text-dark" th:href="@{/registerCategory}">Categories</a>
+    <a class="p-2 text-dark" th:href="@{/user/registerUser}">Products</a>
+    <a class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
+    <a class="p-2 text-dark" th:href="@{/users}">Users</a>
+  </nav>
+  <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
+</div>
+
+<div class="container">
+	<div class="row">
+		<form method="post" th:action="@{/saveProducts/{id} (id=${category.id})}" th:object="${product}">
+			
+			<div class="jumbotron" style="margin-top: 10%">
+			<h3 style="text-align: center"><strong>Product Info</strong></h3>
+			<div class="form-group">
+			<input th:field="*{id}" hidden="true">
+				<label>Product Name</label>
+				<input th:field="*{productName}" class="form-control">
+			</div>
+			<div class="form-group">
+				<label>Product Quantity</label>
+				<input th:field="*{quantity}" class="form-control">
+			</div>
+			<div class="form-group">
+				<label>Product Price</label>
+				<input th:field="*{price}" class="form-control">
+			</div>	
+			<div class="form-group">
+				<label>Image</label>
+				<input type="file" class="form-control" name="image">
+			</div>		
+			<input type="submit" value="Add to Category" class="btn btn-primary btn-sm">
+		</div>
+		
+		</form>
+		<div style="margin-top: 2%; margin-left: 7%;">
+			<h3 th:text="${category.categoryName}+ ' Products' "></h3>
+			<table class="table" style=" width: 600px" border="1">
+				<thead>
+					<tr>
+						<th>Product Name</th>
+						<th>Quantity</th>
+						<th>Price</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="prod:${products}">
+						<td th:text="${prod.productName}"></td>
+						<td th:text="${prod.quantity}"></td>
+						<td th:text="${prod.price}" ></td>
+						<td><a  class="btn btn-info btn-xs"
+						th:href="@{/viewProduct/{pid} (pid=${prod.id}) }">More...</a>
+						<a  class="btn btn-warning btn-xs" 
+						th:href="@{/editProduct/{pid} (pid=${prod.id}) }">edit</a>
+						<a  class="btn btn-danger btn-xs" 
+						th:href="@{/deleteProduct/{pid} (pid=${prod.id}) }">delete</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+	
+</body>
+</html>

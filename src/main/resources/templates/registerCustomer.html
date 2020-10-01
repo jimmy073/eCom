@@ -20,7 +20,8 @@
   	eCommerce
   </a></h3>
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" th:href="@{/registerCategory}">Categories</a>
+    <a class="p-2 text-dark" th:href="@{/admin/registerTent}">Categories</a>
+    <a class="p-2 text-dark" th:href="@{/user/registerUser}">Products</a>
     <a class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
     <a class="p-2 text-dark" th:href="@{/users}">Users</a>
 
@@ -29,41 +30,37 @@
 </div>
 
 <div class="container">
-	<div class="jumbotron" style="background: rgba(135,206,235, 0.3)">
-		<h2 style="text-align: left; margin-left: 70px">CREATING A USER </h2>
+	<div class="jumbotron" style="background: rgba(135,206,235, 0.3); text-align: center">
+		<h2 style="margin-left: 20px">CREATING CUSTOMER ACCOUNT </h2>
 		
-		<form th:action="@{/saveUser}" method="post" th:object="${user}">
+		<form th:action="@{/saveCustomer}" method="post" th:object="${user}">
 			<div class="container"> 
-			<h4 style="text-align: left; margin-left: 40px">Personal Info</h4>
-			<div class="form-align" style="margin-top: 10px" >
+			<h4>Personal Info</h4>
+			<div class="form-group" style="margin-top: 10px" >
 				<label>First Name</label>
-				<input class="form-group" th:field="*{firstName}">
+				<input class="form-control" th:field="*{firstName}">
 				<label>Last Name</label>
-				<input class="form-group" th:field="*{lastName}">
+				<input class="form-control" th:field="*{lastName}">
 			</div>
-			<div>
+			<div style="margin-right: 250px" class="form-group">
 				<label>Telephone</label>
-				<input class="form-group" th:field="*{telephone}">
+				<input cclass="form-control" th:field="*{telephone}">
 			</div>
-			<h4 style="text-align: left; margin-left: 40px">Account Info</h4>
-			<div>
+			<h4 >Account Info</h4>
+			<div style="margin-right: 250px" class="form-group"> 
 				<label>Username</label>
-				<input class="form-group" placeholder="example@example.com" th:field="*{username}">
+				<input class="form-control" type="email" placeholder="example@example.com" th:field="*{username}">
 			</div>
-			<div>
+			<div class="form-group">
 				<label>Password</label>
-				<input class="form-group" type="password">
+				<input class="form-control" type="password">
 				<label>confirm Password</label>
-				<input class="form-group" type="password" th:field="*{password}">
+				<input class="form-control" type="password" th:field="*{password}">
 			</div>
 		</div>
-		<input type="submit" class="btn btn-success sm" value="Sign up" style="margin-left: 28%">
+		<input  type="submit" class="btn btn-success sm" value="Sign up" style="margin-right: 20%">
 		</form>
-				<div th:if="${param.created}">
-                    <div class="alert alert-success">
-                        Account Created Successfully
-                    </div>
-                </div>
+				
 	</div>
 </div>
 	

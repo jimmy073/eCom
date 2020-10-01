@@ -12,11 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
 	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Size(min=4, max=15, message = "must btn 4 and 15")
+	@NotEmpty
 	private String firstName;
 	private String lastName;
 	@Column(unique = true, nullable = false)

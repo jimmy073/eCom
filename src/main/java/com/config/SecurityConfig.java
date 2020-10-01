@@ -20,6 +20,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private CustomLoginSuccessHandler successHandler;
+	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -43,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/**","/js/**", "/img/**").permitAll()
 		.anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").failureUrl("/login?error")
+		.successHandler(successHandler)
 		.usernameParameter("username").passwordParameter("password").permitAll()
 		.and()
 		.logout().invalidateHttpSession(true).clearAuthentication(true)
