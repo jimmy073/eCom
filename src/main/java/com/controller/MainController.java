@@ -1,5 +1,9 @@
 package com.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.auth.RoleService;
 import com.auth.UserService;
@@ -181,8 +187,10 @@ public class MainController {
 	
 	@PostMapping("/saveProducts/{id}")
 	public String saveProducts(Model model, @PathVariable(value = "id") long id, 
-			Product product) {
+			Product product, @RequestParam(name = "foto") MultipartFile foto) throws Exception {
+		uploadProduct(foto, product.getProductName());
 		Category category = categoryService.findCategory(id);
+		//product.setImage(product.getProductName()+".jpg");
 		product.setCategory(category);
 		productService.saveProduct(product);
 		model.addAttribute("category", category);
@@ -222,4 +230,14 @@ public class MainController {
 		return "category";
 	}
 	
+	
+	public String uploadProduct(MultipartFile foto, String prodName) throws Exception {
+		Path currentPath = Paths.get(".");
+		Path absolutePath = currentPath.toAbsolutePath();
+		String folder = absolutePath+"/src/main/resources/static/img/product/";
+		byte [] bytes = foto.getBytes();
+		Path path = Paths.get(folder+prodName+".jpg");
+		Files.write(path, bytes);
+		return folder;
+	}
 }

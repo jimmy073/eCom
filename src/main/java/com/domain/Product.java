@@ -11,6 +11,7 @@ public class Product {
 	private String productName;
 	private double price;
 	private double quantity;
+	private String image;
 	@ManyToOne
 	private Category category;
 	
@@ -55,6 +56,14 @@ public class Product {
 
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

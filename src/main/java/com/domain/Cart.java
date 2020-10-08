@@ -1,6 +1,7 @@
 package com.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -16,4 +17,6 @@ public class Cart {
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdOn;
+	@OneToMany
+	private List<Product> products;
 }
