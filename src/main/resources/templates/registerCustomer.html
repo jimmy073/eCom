@@ -26,14 +26,14 @@
     <a class="p-2 text-dark" th:href="@{/users}">Users</a>
 
   </nav>
-  <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
+  <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Login</a>
 </div>
 
 <div class="container">
 	<div class="jumbotron" style="background: rgba(135,206,235, 0.3); text-align: center">
 		<h2 style="margin-left: 20px">CREATING CUSTOMER ACCOUNT </h2>
 		
-		<form th:action="@{/saveCustomer}" method="post" th:object="${user}">
+		<form th:action="@{/customer/saveCustomer}" method="post" th:object="${user}">
 			<div class="container"> 
 			<h4>Personal Info</h4>
 			<div class="form-group" style="margin-top: 10px" >

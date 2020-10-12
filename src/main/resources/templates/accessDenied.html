@@ -26,45 +26,7 @@
 </div>
 
 <div class="container">
-	<div class="row">
-		<div style="margin-top: 2%; margin-left: 7%;">
-			<h3 style="text-align: center" th:text="${category.categoryName}+ ' Products' "></h3>
-			<table class="table" style=" width: 800px">
-				<thead>
-					<tr>
-						<th>Product Name</th>
-						<th>Image</th>
-						<th>Quantity</th>
-						<th>Price</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="prod:${products}">
-						<td th:text="${prod.productName}"></td>
-						<td >Image</td>
-						<td th:text="${prod.quantity}"></td>
-						<td th:text="${prod.price}" ></td>
-						<td ><a class="btn btn-secondary btn-xs">Add to Cart</a>
-						<a class="btn btn-info btn-xs"
-						th:href="@{/customer/moreInfo/{id} (id=${prod.id})}">More Info</a></td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="row" >
-				<div class="col-sm-3" style="color: steelblue">
-				<strong>[[${category.categoryName}]] : [[${totalItems}]]</strong>	
-				</div>
-				<div class="col-sm-7">
-					Pages  <span th:each="i:${#numbers.sequence(1, totalPages)}">
-						<a th:if="${currentPage != i}" th:href="@{/customer/paged/{id}/{pageNo}
-						(id=${category.id}, pageNo=${i})}">[[${i}]]</a>
-						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-					</span>
-				</div>
-			</div>
-		</div>
-	</div>
+	<h1> ACCESS DENIED PAGE</h1>
 </div>
 	
 </body>

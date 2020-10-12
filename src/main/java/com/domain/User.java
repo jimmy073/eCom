@@ -28,8 +28,7 @@ public class User {
 	private String username;
 	@Column(nullable = false)
 	private String password;
-	private String telephone;
-	private String securityQuestion;	
+	private String telephone;	
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
@@ -93,17 +92,6 @@ public class User {
 		this.telephone = telephone;
 	}
 
-	public String getSecurityQuestion() {
-		return securityQuestion;
-	}
-
-	public void setSecurityQuestion(String securityQuestion) {
-		this.securityQuestion = securityQuestion;
-	}
-
-	/**
-	 * @return the roles
-	 */
 	public Set<Role> getRoles() {
 		return roles;
 	}

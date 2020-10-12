@@ -153,11 +153,7 @@ public class MainController {
 		return "login";
 	}
 	
-	@GetMapping("/registerCustomer")
-	public String registerCustomer(Model model) {
-		model.addAttribute("user",new User());
-		return "registerCustomer";
-	}
+	
 	
 	@GetMapping("/registerCategory")
 	public String registerCategory(Model model) {
@@ -239,5 +235,11 @@ public class MainController {
 		Path path = Paths.get(folder+prodName+".jpg");
 		Files.write(path, bytes);
 		return folder;
+	}
+	
+	@GetMapping("/error")
+	public String showAccessDenied() {
+		
+		return "accessDenied";
 	}
 }

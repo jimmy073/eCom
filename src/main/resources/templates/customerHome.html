@@ -20,10 +20,15 @@
   	eCommerce
   </a></h3>
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" th:href="@{/registerCategory}">Categories</a>
+ 
+    <div class="row">
+    	<a class="p-2 text-dark" th:href="@{/customer/categories}">Categories</a>
     <a class="p-2 text-dark" th:href="@{/user/registerUser}">Products</a>
+    <div sec:authorize="hasAnyRole('SUPER_ADMIN')">
     <a class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
     <a class="p-2 text-dark" th:href="@{/users}">Users</a>
+     </div>
+    </div>
   </nav>
   <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
 </div>

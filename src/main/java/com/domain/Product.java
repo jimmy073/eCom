@@ -1,5 +1,7 @@
 package com.domain;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +16,8 @@ public class Product {
 	private String image;
 	@ManyToOne
 	private Category category;
+	@ManyToMany
+	private Set<Cart> carts;
 	
 	public Long getId() {
 		return id;

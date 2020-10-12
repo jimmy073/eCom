@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Role {
@@ -18,6 +19,8 @@ public class Role {
 	private String name;
 	@ManyToMany
 	private Set<User> users;
+	@OneToMany
+	private Set<Privilege> privileges;
 
 	public Long getId() {
 		return id;
@@ -51,9 +54,18 @@ public class Role {
 		return users;
 	}
 
+
+	public Set<Privilege> getPrivileges() {
+		return privileges;
+	}
+
 	/**
-	 * @param users the users to set
+	 * @param privileges the privileges to set
 	 */
+	public void setPrivileges(Set<Privilege> privileges) {
+		this.privileges = privileges;
+	}
+
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}

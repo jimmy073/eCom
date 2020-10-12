@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.auth.RoleService;
 import com.auth.UserService;
@@ -25,6 +26,7 @@ import com.service.CategoryService;
 import com.service.ProductService;
 
 @Controller
+@RequestMapping("/customer")
 public class CustomerController {
 
 	private UserService userService;
@@ -84,9 +86,19 @@ public class CustomerController {
 	
 	@GetMapping("/viewProduct/{id}")
 	public String viewProduct(Model model, @PathVariable(value = "id") long id) {
-		Product product = productService.findProduct(id);
-		model.addAttribute("product", product);
-		return "product";
+		try {
+			Product product = productService.findProduct(id);
+			model.addAttribute("product", product);
+			return "product";
+		} catch (Exception e) {
+			return errorHandles();
+		}
+	}
+	
+	@GetMapping("/categories")
+	public String categories(Model model) {
+		model.addAttribute("categories", categoryService.categories());
+		return "home";
 	}
 	
 	@GetMapping("/paged/{id}/{pageNo}")
@@ -103,5 +115,15 @@ public class CustomerController {
 		return "viewProducts";
 	}
 	
+	@GetMapping("/registerCustomer")
+	public String registerCustomer(Model model) {
+		model.addAttribute("user",new User());
+		return "registerCustomer";
+	}
+	
+	@GetMapping("/error")
+	public String errorHandles() {
+		return "erreur";
+	}
 	
 }

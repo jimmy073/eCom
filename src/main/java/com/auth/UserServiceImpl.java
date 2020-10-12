@@ -71,7 +71,8 @@ public class UserServiceImpl implements UserService {
 		Set<Role> currentRoles = user.getRoles();
 		currentRoles.add(role);
 		user.setRoles(currentRoles);
-		saveUser(user);
+		user.setId(user.getId());
+		userRepo.save(user);
 		return user;
 	}
 
@@ -82,7 +83,8 @@ public class UserServiceImpl implements UserService {
 		Set<Role> currentRoles = user.getRoles();
 		currentRoles.remove(role);
 		user.setRoles(currentRoles);
-		saveUser(user);
+		user.setId(user.getId());
+		userRepo.save(user);
 		return user;
 	}
 

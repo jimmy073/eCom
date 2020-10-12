@@ -45,7 +45,7 @@
 			<tbody>
 				<tr th:each="cate:${categories}">
 					<td>
-					<a class="btn" th:href="@{/viewProducts/{id} (id=${cate.id}) }"
+					<a class="btn" th:href="@{/customer/viewProducts/{id} (id=${cate.id}) }"
 					th:text="${cate.categoryName}" ></a>
 					</td>
 					<td>
@@ -59,9 +59,9 @@
 										<tbody>
 											<tr><td th:text="${prod.productName}"></td></tr>
 											<tr><td><a class="btn btn-secondary btn-xs"
-											th:href="@{/addToCart/{id} (id=${prod.id}) }">Add To Cart</a>
+											th:href="@{/customer/addToCart/{id} (id=${prod.id}) }">Add To Cart</a>
 											<a class="btn btn-warning btn-xs"
-											th:href="@{/moreInfo/{id} (id=${prod.id})}">More Info</a>
+											th:href="@{/customer/moreInfo/{id} (id=${prod.id})}">More Info</a>
 											</td></tr>
 										</tbody>
 									</table>
@@ -73,7 +73,7 @@
 						</table>
 					</td>
 			<td>
-					<a class="btn" th:href="@{/viewProducts/{id} (id=${cate.id}) }"
+					<a class="btn" th:href="@{/customer/viewProducts/{id} (id=${cate.id}) }"
 					>More>></a>
 					</td>
 				</tr>

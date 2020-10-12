@@ -43,7 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/","/viewProducts/**", "/paged/**","/js/**", "/img/**").permitAll()
+		http.authorizeRequests()
+		.antMatchers("/saveRole/**").hasAnyRole("SUPER_ADMIN","TESTING")
+		.antMatchers("/","/customer/**","/js/**", "/img/**").permitAll()
 		.anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").failureUrl("/login?error")
 		.successHandler(successHandler)

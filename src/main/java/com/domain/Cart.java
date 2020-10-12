@@ -1,7 +1,7 @@
 package com.domain;
 
 import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -17,6 +17,11 @@ public class Cart {
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdOn;
-	@OneToMany
-	private List<Product> products;
+	@ManyToMany
+	@JoinTable(
+			name="cart_products",
+			joinColumns = {@JoinColumn(name="cart_id")},
+			inverseJoinColumns = {@JoinColumn(name="product_id")}
+			)
+	private Set<Product> products;
 }
