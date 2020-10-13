@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.domain.Role;
-import com.domain.User;
 
 @Service
 public interface RoleService {
@@ -20,6 +19,6 @@ public interface RoleService {
 	
 	List<Role> roles();
 	
-	List<Role> rolesAUserDoesntHave(User user);
+	Role addPrivilege(long rid, long pid);
 	
 }

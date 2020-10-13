@@ -20,13 +20,39 @@
   	eCommerce
   </a></h3>
   <nav class="my-2 my-md-0 mr-md-3">
-
+	<a class="p-2 text-dark" th:href="@{/customer/categories}">Categories</a>
+  <a class="p-2 text-dark" th:href="@{/customer/allProducts}">Products</a>
   </nav>
   <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Login</a>
 </div>
 
-<div class="container">
-	<h1 th:text="${product.productName}+ ' Details'"></h1>
+<div class="container" style="text-align: center">
+	<h1  th:text=" 'More info about '+ ${product.productName}"></h1>
+
+	<table class="table" style="width: 60%; margin-left: 20%; margin-top: 5%">
+		<tbody>
+			<tr>
+				<td>Image</td>
+				<td>
+				<img th:src="@{${'/img/product/'+ product.image}}" style="height: 100px; width: 200px"
+		alt="Image de Produit">
+				</td>
+			</tr>
+			<tr>
+				<td>Quantity</td>
+				<td th:text="${product.quantity}"></td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td th:text="${product.price}"></td>
+			</tr>
+			<tr>
+				<td>Category</td>
+				<td th:text="${product.category.categoryName}"></td>
+			</tr>
+		</tbody>
+	</table>
+
 </div>
 	
 </body>

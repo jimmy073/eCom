@@ -25,8 +25,9 @@
   <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Login</a>
 </div>
 
-<div class="container">
-	<h1> ACCESS DENIED PAGE</h1>
+<div class="container" style="text-align: center; margin-top: 14%">
+	<h1 style="color: red"> ACCESS DENIED PAGE</h1>	
+	<h3> <a th:href="@{/}"> Go To Home Page</a></h3>
 </div>
 	
 </body>

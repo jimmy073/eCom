@@ -1,7 +1,6 @@
 package com.auth;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -68,25 +67,23 @@ public class UserServiceImpl implements UserService {
 	public User addRole(long uid, long rid) {
 		User user = findUser(uid);
 		Role role = roleService.findRole(rid);
-		Set<Role> currentRoles = user.getRoles();
-		currentRoles.add(role);
-		user.setRoles(currentRoles);
+		user.setRole(role);
 		user.setId(user.getId());
 		userRepo.save(user);
 		return user;
 	}
-
-	@Override
-	public User removeRole(long uid, long rid) {
-		User user = findUser(uid);
-		Role role = roleService.findRole(rid);
-		Set<Role> currentRoles = user.getRoles();
-		currentRoles.remove(role);
-		user.setRoles(currentRoles);
-		user.setId(user.getId());
-		userRepo.save(user);
-		return user;
-	}
+//
+//	@Override
+//	public User removeRole(long uid, long rid) {
+//		User user = findUser(uid);
+//		Role role = roleService.findRole(rid);
+//		Set<Role> currentRoles = user.getRoles();
+//		currentRoles.remove(role);
+//		user.setRoles(currentRoles);
+//		user.setId(user.getId());
+//		userRepo.save(user);
+//		return user;
+//	}
 
 
 

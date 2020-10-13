@@ -1,14 +1,9 @@
 package com.domain;
 
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Role {
@@ -17,11 +12,16 @@ public class Role {
 	private Long id;
 	@Column(unique = true, nullable = false)
 	private String name;
-	@ManyToMany
-	private Set<User> users;
 	@OneToMany
+	private List<User> users;
+	@ManyToMany
+	@JoinTable(
+			name="role_privileges",
+			joinColumns = {@JoinColumn(name = "role_id")},
+		    inverseJoinColumns = {@JoinColumn(name = "privilege_id")}
+			)
 	private Set<Privilege> privileges;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -47,14 +47,20 @@ public class Role {
 		super();
 	}
 
-	/**
-	 * @return the users
-	 */
-	public Set<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 
+	/**
+	 * @return the privileges
+	 */
 	public Set<Privilege> getPrivileges() {
 		return privileges;
 	}
@@ -66,8 +72,7 @@ public class Role {
 		this.privileges = privileges;
 	}
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
-	
+
+
+
 }

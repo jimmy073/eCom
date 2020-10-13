@@ -44,13 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/saveRole/**").hasAnyRole("SUPER_ADMIN","TESTING")
+		.antMatchers("/registerUser/**").hasAnyRole("ADMIN")
+		.antMatchers("/registerRole/**", "/registerUser/**").hasAnyRole("SUPER_ADMIN")
 		.antMatchers("/","/customer/**","/js/**", "/img/**").permitAll()
 		.anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").failureUrl("/login?error")
 		.successHandler(successHandler)
 		.usernameParameter("username").passwordParameter("password").permitAll()
-		.and()
+		.and().exceptionHandling().accessDeniedPage("/access-denied").and()
 		.logout().invalidateHttpSession(true).clearAuthentication(true)
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/login?logout")

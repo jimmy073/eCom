@@ -35,7 +35,7 @@
 <div class="row" style="margin-left: 10%; margin-top: 2%">
   <div class="column" style="background-color:#eee;">
     <div class="container">
-	<h2 style="text-align: left; margin-left: 20px" th:text="'ROLES of ' + ${user.firstName}"></h2>
+	<h2 style="text-align: left; margin-left: 20px" th:text="'ROLE of ' + ${user.firstName}"></h2>
 		<table border="1" class="table" style="width: 200px; margin-top: 30px">
 			<thead>
 				<tr>
@@ -57,7 +57,7 @@
   </div>
   <div class="column" style="background-color:#dee;">
     <div class="container">
-	<h2 style="text-align: left; margin-left: 20px" th:text="'Add Roles to ' + ${user.firstName}"></h2>
+	<h2 style="text-align: left; margin-left: 20px" th:text="'All Roles'"></h2>
 		<form>
 			<input hidden="true" th:value="${user.id}" name="userId">
 		<table border="1" class="table" style="width: 200px; margin-top: 30px; margin-left: 3%">

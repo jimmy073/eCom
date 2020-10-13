@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<head>
-		<title>eCommerce Category Products</title>
+		<title>eCommerce HomePage</title>
 		<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
@@ -23,9 +23,9 @@
  
     <div class="row">
     	<a class="p-2 text-dark" th:href="@{/customer/categories}">Categories</a>
-    <a class="p-2 text-dark" th:href="@{/user/registerUser}">Products</a>
-    <div sec:authorize="hasAnyRole('SUPER_ADMIN')">
-    <a class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
+    	<a class="p-2 text-dark" th:href="@{/customer/allProducts}">Products</a>
+    <div >
+    <a  sec:authorize="hasAnyRole('SUPER_ADMIN')" class="p-2 text-dark" th:href="@{/registerRole}">Roles</a>
     <a class="p-2 text-dark" th:href="@{/users}">Users</a>
      </div>
     </div>

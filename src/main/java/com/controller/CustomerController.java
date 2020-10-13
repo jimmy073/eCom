@@ -1,9 +1,5 @@
 package com.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +52,9 @@ public class CustomerController {
 
 	@PostMapping("/saveCustomer")
 	public String saveCustomer(Model model,@Valid User user, BindingResult result ) {
-		Role role = roleService.findRole("ROLE_CUSTOMER");
-		Set<Role> rs = new HashSet<>();
-		rs.add(role);
-		user.setRoles(rs);
+		//Role role = new Role("ROLE_SUPER_ADMIN");
+		//roleService.saveRole(role);
+		//user.setRole(role);
 		userService.saveUser(user);
 		model.addAttribute("user", new User());
 		return "registerCustomer";
@@ -86,13 +81,10 @@ public class CustomerController {
 	
 	@GetMapping("/viewProduct/{id}")
 	public String viewProduct(Model model, @PathVariable(value = "id") long id) {
-		try {
 			Product product = productService.findProduct(id);
 			model.addAttribute("product", product);
 			return "product";
-		} catch (Exception e) {
-			return errorHandles();
-		}
+		
 	}
 	
 	@GetMapping("/categories")
@@ -121,9 +113,20 @@ public class CustomerController {
 		return "registerCustomer";
 	}
 	
-	@GetMapping("/error")
-	public String errorHandles() {
-		return "erreur";
+	@GetMapping("/productsPaged/{pageNo}")
+	public String productsPaged(Model model, @PathVariable(value = "pageNo")int pageNo) {
+		int pageSize = 6;
+		Page<Product> prodsPage = productService.findProductPaginated(pageNo, pageSize);
+		model.addAttribute("totalItems", prodsPage.getTotalElements());
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages", prodsPage.getTotalPages());
+		model.addAttribute("products", prodsPage.getContent());
+		return "allProducts";
+	}
+	
+	@GetMapping("/allProducts")
+	public String allProducts(Model model) {
+		return productsPaged(model, 1);
 	}
 	
 }

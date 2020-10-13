@@ -27,7 +27,8 @@
   <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
 </div>
 
-<div class="container">
+<div class="row" style="margin-left: 7%;">
+	<div class="column">
 	<div class="jumbotron" style="background: rgba(135,206,235, 0.3)">
 	<h2 style="text-align: left; margin-left: 70px">ROLES MANAGEMENT</h2>
 		<form th:action="@{/saveRole}" method="post" th:object="${role}">
@@ -39,7 +40,7 @@
 			</div>
 			<input type="submit" class="btn btn-primary btn-sm" value="Save" style="margin-left: 30px" >
 		</form>
-		<table border="1" class="table" style="width: 200px; margin-top: 30px">
+		<table border="1" class="table" style="width: 400px; margin-top: 30px">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -51,11 +52,48 @@
 				<tr th:each="role:${roles}">
 					<td th:text="${role.id}"></td>
 					<td th:text="${role.name}"></td>
-					<td><a class="btn btn-danger btn-xs" style="color: white"
+					<td>
+					<a class="btn btn-info btn-xs" style="color: white"
+					th:href="@{/showPermissions/{id} (id=${role.id})}">permissions</a>
+					<a class="btn btn-danger btn-xs" style="color: white"
 					th:href="@{/deleteRole/{id} (id=${role.id})}">delete</a></td>
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	</div>
+	
+	<div class="column" style="margin-left: 4%;">
+		<div class="jumbotron" style="background: rgba(125,190,35, 0.5)">
+	<h2 style="text-align: left; margin-left: 70px">PERMISSION MANAGEMENT</h2>
+		<form th:action="@{/savePrivilege}" method="post" th:object="${privilege}">
+			<div>
+			<h4 style="text-align: center; margin-left: 40px">New Permission</h4>
+			<input hidden="true" th:field="*{id}">
+				<label>Permission Name</label>
+				<input class="form-group" th:field="*{privilegeName}">
+			</div>
+			<input type="submit" class="btn btn-primary btn-sm" value="Save" style="margin-left: 30px" >
+		</form>
+		<table border="1" class="table" style="width: 400px; margin-top: 30px">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="priv:${privileges}">
+					<td th:text="${priv.id}"></td>
+					<td th:text="${priv.privilegeName}"></td>
+					<td>
+					<a class="btn btn-danger btn-xs" style="color: white"
+					th:href="@{/deleteRole/{id} (id=${role.id})}">delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	</div>
 </div>
 	

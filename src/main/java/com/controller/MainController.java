@@ -20,11 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.auth.RoleService;
 import com.auth.UserService;
 import com.domain.Category;
+import com.domain.Privilege;
 import com.domain.Product;
 import com.domain.Role;
 import com.domain.User;
 import com.service.CategoryService;
+import com.service.PrivilegeService;
 import com.service.ProductService;
+
+import net.bytebuddy.asm.Advice.Return;
 
 @Controller
 public class MainController {
@@ -33,11 +37,19 @@ public class MainController {
 	private RoleService roleService;
 	private CategoryService categoryService;
 	private ProductService productService;
+	private PrivilegeService privilegeService;
 	
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@Autowired
+	public void setPrivilegeService(PrivilegeService privilegeService) {
+		this.privilegeService = privilegeService;
+	}
+
+
 
 	@Autowired
 	public void setRoleService(RoleService roleService) {
@@ -89,6 +101,8 @@ public class MainController {
 	@GetMapping("/registerRole")
 	public String registerRole(Model model) {
 		model.addAttribute("role", new Role());
+		model.addAttribute("privilege", new Privilege());
+		model.addAttribute("privileges", privilegeService.privileges());
 		model.addAttribute("roles", roleService.roles());
 		return "roles";
 	}
@@ -96,9 +110,7 @@ public class MainController {
 	@PostMapping("/saveRole")
 	public String saveUser(Model model, Role role) {
 		roleService.saveRole(role);
-		model.addAttribute("role", new Role());
-		model.addAttribute("roles", roleService.roles());
-		return "roles";
+		return registerRole(model);
 	}
 	
 	@GetMapping("/users")
@@ -110,9 +122,9 @@ public class MainController {
 	@GetMapping("/userRoles/{id}")
 	public String userRoles(Model model, @PathVariable(value="id") long id) {
 		User user = userService.findUser(id);
-		model.addAttribute("roles", user.getRoles());
+		model.addAttribute("roles", user.getRole());
 		model.addAttribute("user", user);
-		model.addAttribute("allRoles", roleService.rolesAUserDoesntHave(user));
+		model.addAttribute("allRoles", roleService.roles());
 		return "userRoles";
 	}
 	
@@ -121,23 +133,23 @@ public class MainController {
 			@PathVariable(value = "uid") long uid) {
 		User user = userService.findUser(uid);
 		user = userService.addRole(uid, rid);
-		model.addAttribute("roles", user.getRoles());
+		model.addAttribute("roles", user.getRole());
 		model.addAttribute("user", user);
-		model.addAttribute("allRoles", roleService.rolesAUserDoesntHave(user));
+		model.addAttribute("allRoles", roleService.roles());
 		return "userRoles";
 	}
-	
-	
-	@GetMapping("/removeRole/{rid}/user/{uid}")
-	public String removeRole(Model model, @PathVariable(value = "rid") long rid, 
-			@PathVariable(value = "uid") long uid) {
-		User user = userService.findUser(uid);
-		user = userService.removeRole(uid, rid);
-		model.addAttribute("roles", user.getRoles());
-		model.addAttribute("user", user);
-		model.addAttribute("allRoles", roleService.rolesAUserDoesntHave(user));
-		return "userRoles";
-	}
+//	
+//	
+//	@GetMapping("/removeRole/{rid}/user/{uid}")
+//	public String removeRole(Model model, @PathVariable(value = "rid") long rid, 
+//			@PathVariable(value = "uid") long uid) {
+//		User user = userService.findUser(uid);
+//		user = userService.removeRole(uid, rid);
+//		model.addAttribute("roles", user.getRoles());
+//		model.addAttribute("user", user);
+//		model.addAttribute("allRoles", roleService.rolesAUserDoesntHave(user));
+//		return "userRoles";
+//	}
 	
 	@RequestMapping("/deleteRole/{id}")
 	public String deleteRole(Model model, @PathVariable(value = "id") long id) {
@@ -186,7 +198,7 @@ public class MainController {
 			Product product, @RequestParam(name = "foto") MultipartFile foto) throws Exception {
 		uploadProduct(foto, product.getProductName());
 		Category category = categoryService.findCategory(id);
-		//product.setImage(product.getProductName()+".jpg");
+		product.setImage(product.getProductName()+".jpg");
 		product.setCategory(category);
 		productService.saveProduct(product);
 		model.addAttribute("category", category);
@@ -237,9 +249,35 @@ public class MainController {
 		return folder;
 	}
 	
-	@GetMapping("/error")
-	public String showAccessDenied() {
-		
-		return "accessDenied";
+	@GetMapping("/showPermissions/{id}")
+	public String showPermissions(Model model, @PathVariable(value = "id") long id) {
+		Role role = roleService.findRole(id);
+		model.addAttribute("role", role);
+		model.addAttribute("privileges", role.getPrivileges());
+		model.addAttribute("allPrivileges", privilegeService.privilegesARoleDoesntHave(role));
+		return "rolePermissions";
 	}
+	
+	@PostMapping("/savePrivilege")
+	public String savePrivilege(Model model, Privilege privilege) {
+		privilegeService.savePrivilege(privilege);
+		return registerRole(model);
+	}
+	
+	@GetMapping("/addPrivilege/{rid}/{pid}")
+	public String addPrivilege(Model model, @PathVariable(value = "rid") long rid,
+			@PathVariable(value = "pid") long pid) {
+		roleService.addPrivilege(rid, pid);
+		Role role = roleService.findRole(rid);
+		model.addAttribute("role", role);
+		model.addAttribute("privileges", role.getPrivileges());
+		model.addAttribute("allPrivileges", privilegeService.privilegesARoleDoesntHave(role));
+		return "rolePermissions";
+	}
+	
+	@GetMapping("/access-denied")
+	public String accessDenied() {
+			return "accessDenied";
+	}
+	
 }

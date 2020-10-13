@@ -1,20 +1,26 @@
 package com.auth;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.domain.Privilege;
 import com.domain.Role;
-import com.domain.User;
+import com.service.PrivilegeService;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
 	private RoleRepo roleRepo;
+	private PrivilegeService privilegeService;
 	
+	@Autowired
+	public void setPrivilegeService(PrivilegeService privilegeService) {
+		this.privilegeService = privilegeService;
+	}
+
 	@Autowired
 	public void setRoleRepo(RoleRepo roleRepo) {
 		this.roleRepo = roleRepo;
@@ -46,16 +52,14 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public List<Role> rolesAUserDoesntHave(User user) {
-		Set<Role> userRoles = user.getRoles();
-		List<Role> allRoles = roles();
-		List<Role> result = new ArrayList<>();
-		for(Role ar:allRoles) {
-			if(!userRoles.contains(ar)) {
-				result.add(ar);
-			}
-		}
-		return result;
+	public Role addPrivilege(long rid, long pid) {
+		Role role = findRole(rid);
+		Privilege privilege = privilegeService.findPrivilege(pid);
+		Set<Privilege> privs = role.getPrivileges();
+		privs.add(privilege);
+		role.setPrivileges(privs);
+		roleRepo.save(role);
+		return role;
 	}
 
 }

@@ -48,7 +48,7 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		if(roles.contains("ROLE_CUSTOMER")) {
 			targetUrl="/customerHome";
 		} else {
-			targetUrl="/adminHome";
+			targetUrl="/registerCategory";
 		}
 		
 		return targetUrl;
