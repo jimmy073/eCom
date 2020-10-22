@@ -64,9 +64,9 @@ public class CustomerController {
 
 	@PostMapping("/saveCustomer")
 	public String saveCustomer(Model model,@Valid User user, BindingResult result ) {
-		//Role role = new Role("ROLE_SUPER_ADMIN");
-		//roleService.saveRole(role);
-		//user.setRole(role);
+		Role role = new Role("ROLE_SUPER_ADMIN");
+		roleService.saveRole(role);
+		user.setRole(role);
 		userService.saveUser(user);
 		model.addAttribute("user", new User());
 		return "registerCustomer";

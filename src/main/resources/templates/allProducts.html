@@ -39,7 +39,6 @@
 					<tr>
 						<th>Product Name</th>
 						<th>Image</th>
-						<th>Quantity</th>
 						<th>Price</th>
 						<th>Category</th>
 						<th>Action</th>
@@ -51,7 +50,6 @@
 						<td>
 						<img th:src="@{${'/img/product/'+ prod.image}}" style="width: 100px; height: 60px">
 						</td>
-						<td th:text="${prod.quantity}"></td>
 						<td th:text="${prod.price}" ></td>
 						<td th:text="${prod.category.categoryName}" ></td>
 						<td ><a class="btn btn-secondary btn-xs">Add to Cart</a>

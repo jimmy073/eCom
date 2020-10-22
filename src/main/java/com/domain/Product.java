@@ -1,6 +1,7 @@
 package com.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ public class Product implements Serializable {
 	private String productName;
 	private double price;
 	@Temporal(TemporalType.TIMESTAMP)
-	private double createdTime;
+	private Date createdTime;
 	private String image;
 	@ManyToOne
 	private Category category;
@@ -29,7 +30,6 @@ public class Product implements Serializable {
 	public Long getId() {
 		return id;
 	}
-
 	
 	public Product(Long id, String productName, double price) {
 		super();
@@ -37,8 +37,6 @@ public class Product implements Serializable {
 		this.productName = productName;
 		this.price = price;
 	}
-
-
 
 	public void setId(Long id) {
 		this.id = id;
@@ -71,17 +69,14 @@ public class Product implements Serializable {
 		super();
 	}
 
-	
-
-	public double getCreatedTime() {
+	public Date getCreatedTime() {
 		return createdTime;
 	}
 
 
-	public void setCreatedTime(double createdTime) {
+	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
-
 
 	public String getImage() {
 		return image;

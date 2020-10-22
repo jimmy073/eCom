@@ -41,10 +41,6 @@
 				<input th:field="*{productName}" class="form-control">
 			</div>
 			<div class="form-group">
-				<label>Product Quantity</label>
-				<input th:field="*{quantity}" class="form-control">
-			</div>
-			<div class="form-group">
 				<label>Product Price</label>
 				<input th:field="*{price}" class="form-control">
 			</div>	
@@ -62,7 +58,6 @@
 				<thead>
 					<tr>
 						<th>Product Name</th>
-						<th>Quantity</th>
 						<th>Price</th>
 						<th>Actions</th>
 					</tr>
@@ -70,7 +65,6 @@
 				<tbody>
 					<tr th:each="prod:${products}">
 						<td th:text="${prod.productName}"></td>
-						<td th:text="${prod.quantity}"></td>
 						<td th:text="${prod.price}" ></td>
 						<td><a  class="btn btn-info btn-xs"
 						th:href="@{/viewProduct/{pid} (pid=${prod.id}) }">More...</a>
