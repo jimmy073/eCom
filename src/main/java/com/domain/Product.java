@@ -1,27 +1,44 @@
 package com.domain;
 
-import java.util.Set;
+import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-public class Product {
+public class Product implements Serializable {
 
+	private static final long serialVersionUID = 6524547110169229070L;
+	
 	@Id@GeneratedValue
 	private Long id;
 	@Column(unique = true)
 	private String productName;
 	private double price;
-	private double quantity;
+	@Temporal(TemporalType.TIMESTAMP)
+	private double createdTime;
 	private String image;
 	@ManyToOne
 	private Category category;
-	@ManyToMany
-	private Set<Cart> carts;
 	
 	public Long getId() {
 		return id;
 	}
+
+	
+	public Product(Long id, String productName, double price) {
+		super();
+		this.id = id;
+		this.productName = productName;
+		this.price = price;
+	}
+
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -54,13 +71,17 @@ public class Product {
 		super();
 	}
 
-	public double getQuantity() {
-		return quantity;
+	
+
+	public double getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
+
+	public void setCreatedTime(double createdTime) {
+		this.createdTime = createdTime;
 	}
+
 
 	public String getImage() {
 		return image;

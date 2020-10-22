@@ -11,29 +11,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.auth.RoleService;
 import com.auth.UserService;
 import com.domain.Category;
+import com.domain.Order;
 import com.domain.Product;
 import com.domain.Role;
 import com.domain.User;
 import com.service.CategoryService;
+import com.service.OrderService;
 import com.service.ProductService;
 
 @Controller
 @RequestMapping("/customer")
+@SessionAttributes("cart")
 public class CustomerController {
 
 	private UserService userService;
 	private RoleService roleService;
 	private CategoryService categoryService;
 	private ProductService productService;
+	private OrderService orderService;
 	
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@Autowired
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
+	}
+
+
 
 	@Autowired
 	public void setRoleService(RoleService roleService) {
@@ -75,6 +87,7 @@ public class CustomerController {
 	@GetMapping("/addToCart/{id}")
 	public String addToCart(Model model, @PathVariable(value = "id") long id) {
 		Product product = productService.findProduct(id);
+		
 		model.addAttribute("product", product);
 		return "product";
 	}
@@ -89,6 +102,10 @@ public class CustomerController {
 	
 	@GetMapping("/categories")
 	public String categories(Model model) {
+		
+		Order cart = new Order();
+		cart = orderService.createOrder(cart);
+		model.addAttribute("cart", new Order());
 		model.addAttribute("categories", categoryService.categories());
 		return "home";
 	}
@@ -128,5 +145,6 @@ public class CustomerController {
 	public String allProducts(Model model) {
 		return productsPaged(model, 1);
 	}
+		
 	
 }

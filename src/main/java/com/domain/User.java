@@ -1,5 +1,7 @@
 package com.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User {
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = -597192251462339119L;
+
 	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
