@@ -19,7 +19,7 @@ public class OrderDetail implements Serializable {
 	private Product product;
 	
 	@Column(nullable = false)
-    private int quanity;
+    private int quantity;
  
     @Column(nullable = false)
     private double price;
@@ -51,14 +51,6 @@ public class OrderDetail implements Serializable {
 		this.product = product;
 	}
 
-	public int getQuanity() {
-		return quanity;
-	}
-
-	public void setQuanity(int quanity) {
-		this.quanity = quanity;
-	}
-
 	public double getPrice() {
 		return price;
 	}
@@ -73,6 +65,10 @@ public class OrderDetail implements Serializable {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
     
     
