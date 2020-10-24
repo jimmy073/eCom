@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,12 @@ import com.domain.Order;
 import com.domain.Product;
 import com.domain.Role;
 import com.domain.User;
+import com.form.CustomerForm;
+import com.model.CartInfo;
 import com.service.CategoryService;
 import com.service.OrderService;
 import com.service.ProductService;
+import com.validator.CustomerFormValidator;
 
 @Controller
 @RequestMapping("/customer")
@@ -34,6 +39,9 @@ public class CustomerController {
 	private CategoryService categoryService;
 	private ProductService productService;
 	private OrderService orderService;
+	
+	@Autowired
+	private CustomerFormValidator customerFormValidator;
 	
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -62,6 +70,30 @@ public class CustomerController {
 		this.productService = productService;
 	}
 
+	
+	@InitBinder
+	public void myInitBinder(WebDataBinder dataBinder) {
+		Object target = dataBinder.getTarget();
+		
+		if(target==null) {
+			return;
+		}
+		System.out.println("Target "+ target.toString());
+		
+		//Case Update Qty in Cart
+		// (@ModelAttribute("cartForm") @Validated CartInfo cartForm)
+		if(target.getClass()==CartInfo.class) {
+			
+		}
+		
+		// Case save customer information.
+	    // (@ModelAttribute @Validated CustomerInfo customerForm)
+		else if(target.getClass()==CustomerForm.class) {
+			dataBinder.setValidator(customerFormValidator);
+		}
+	}
+	
+	
 	@PostMapping("/saveCustomer")
 	public String saveCustomer(Model model,@Valid User user, BindingResult result ) {
 //		Role role = new Role("ROLE_SUPER_ADMIN");
