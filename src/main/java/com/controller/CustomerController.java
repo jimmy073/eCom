@@ -1,5 +1,6 @@
 package com.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.auth.RoleService;
@@ -24,9 +27,11 @@ import com.domain.Role;
 import com.domain.User;
 import com.form.CustomerForm;
 import com.model.CartInfo;
+import com.model.ProductInfo;
 import com.service.CategoryService;
 import com.service.OrderService;
 import com.service.ProductService;
+import com.utils.Utils;
 import com.validator.CustomerFormValidator;
 
 @Controller
@@ -95,11 +100,13 @@ public class CustomerController {
 	
 	
 	@PostMapping("/saveCustomer")
-	public String saveCustomer(Model model,@Valid User user, BindingResult result ) {
-//		Role role = new Role("ROLE_SUPER_ADMIN");
-//		roleService.saveRole(role);
-//		user.setRole(role);
+	public String saveCustomer(Model model,@Valid User user, BindingResult result, 
+			HttpServletRequest request ) {
+		Role role = new Role("ROLE_CUSTOMER");
+		roleService.saveRole(role);
+		user.setRole(role);
 		userService.saveUser(user);
+		CartInfo cartInfo = Utils.getCartInSession(request);
 		model.addAttribute("user", new User());
 		return "registerCustomer";
 	}
@@ -112,14 +119,6 @@ public class CustomerController {
 	@GetMapping("/moreInfo/{id}")
 	public String moreInfo(Model model, @PathVariable(value = "id") long id) {
 		Product product = productService.findProduct(id);
-		model.addAttribute("product", product);
-		return "product";
-	}
-	
-	@GetMapping("/addToCart/{id}")
-	public String addToCart(Model model, @PathVariable(value = "id") long id) {
-		Product product = productService.findProduct(id);
-		
 		model.addAttribute("product", product);
 		return "product";
 	}
@@ -178,5 +177,53 @@ public class CustomerController {
 		return productsPaged(model, 1);
 	}
 		
+	@GetMapping("/addToCart/{id}")
+	public String addToCart(HttpServletRequest request,Model model, @PathVariable(value = "id") long id) {
+		Product product = productService.findProduct(id);
+		
+		if(product!=null) {
+			CartInfo cartInfo = Utils.getCartInSession(request);
+			ProductInfo productInfo = new ProductInfo(product);
+			cartInfo.addProduct(productInfo, 1);
+		}
+		
+		model.addAttribute("product", product);
+		model.addAttribute("cart", request.getAttribute("myCart"));
+		return "redirect:/customer/shoppingCart";
+	}
+	
+	@GetMapping("/shoppingCart")
+	public String shoppingCart(HttpServletRequest request,Model model){
+		CartInfo myCart = Utils.getCartInSession(request);
+		model.addAttribute("cartForm", myCart);	
+		return "shoppingCart";
+	}
+	
+	@PostMapping("/shoppingCart")
+	public String shoppingCartUpdateQty(HttpServletRequest request,Model model,
+			@ModelAttribute("cartForm") CartInfo cartForm){
+		CartInfo cartInfo = Utils.getCartInSession(request);
+		cartInfo.updateQuantiy(cartForm);	
+		return "redirect:/customer/shoppingCart";
+	}
+	
+	@RequestMapping({"/shoppingCartRemoveProduct"})
+	public String shoppingCartRemoveProduct(HttpServletRequest request, Model model, 
+			@RequestParam(value = "pcode") long pcode) {
+		Product product = productService.findProduct(pcode);
+		
+		if(product!=null) {
+			CartInfo cartInfo = Utils.getCartInSession(request);
+			ProductInfo productInfo = new ProductInfo(product);
+			cartInfo.removeProduct(productInfo);
+		}
+		return "redirect:/customer/shoppingCart";
+	}
+	
+	@RequestMapping({"/checkout"})
+	public String checkout(HttpServletRequest request, Model model) {
+			CartInfo cartInfo = Utils.getCartInSession(request);
+		return "redirect:/login";
+	}
 	
 }

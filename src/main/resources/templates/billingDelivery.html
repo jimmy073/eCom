@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<head>
-		<title>eCommerce HomePage</title>
+		<title>eCommerce Category Products</title>
 		<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
 	</head>
 	<body>
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -20,23 +21,16 @@
   	eCommerce
   </a></h3>
   <nav class="my-2 my-md-0 mr-md-3">
- 
-    <div class="row">
-    	<a class="p-2 text-dark" th:href="@{/customer/categories}">Categories</a>
-    	<a class="p-2 text-dark" th:href="@{/customer/allProducts}">Products</a>
-    	<a class="p-2 text-dark" th:href="@{/customer/allProducts}">Products</a>
-    </div>
+  <a class="p-2 text-dark" th:href="@{/customer/categories}">Categories</a>
+  <a class="p-2 text-dark" th:href="@{/customer/allProducts}">Products</a>
   </nav>
-  <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/logout}">Logout</a>
+  <a  sec:authorise="isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Login</a>
 </div>
 
 <div class="container">
-	<h1 style="text-align: center">My Orders</h1>
-	<div style="margin-left: 100%">
-		<a class="btn btn-warning" th:href="@{/customer/shoppingCart}">Orders</a>
-		<a class="btn btn-info" th:href="@{/customer/shoppingCart}">MyCart</a>
-	</div>
+	<h1>Billing n Delivery</h1>
 </div>
-	
+
+<th:block th:include="/_footer"></th:block>
 </body>
 </html>

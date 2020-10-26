@@ -7,7 +7,7 @@ import com.model.CartInfo;
 public class Utils {
 
 	//Products in the carts, stored in a session
-	public static CartInfo gateCartInSession(HttpServletRequest request) {
+	public static CartInfo getCartInSession(HttpServletRequest request) {
 		CartInfo cartInfo = (CartInfo) request.getSession().getAttribute("myCart");
 		if(cartInfo == null) {
 			cartInfo = new CartInfo();

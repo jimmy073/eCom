@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,11 @@ import com.domain.Privilege;
 import com.domain.Product;
 import com.domain.Role;
 import com.domain.User;
+import com.model.CartInfo;
 import com.service.CategoryService;
 import com.service.PrivilegeService;
 import com.service.ProductService;
+import com.utils.Utils;
 
 import net.bytebuddy.asm.Advice.Return;
 
@@ -161,7 +164,8 @@ public class MainController {
 	}
 	
 	@RequestMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request) {
+		CartInfo cartInfo = Utils.getCartInSession(request);
 		return "login";
 	}
 	
