@@ -32,6 +32,7 @@ public class User implements Serializable{
 	private String telephone;	
 	@ManyToOne
 	private Role role;
+	private String address;
 	
 	public Long getId() {
 		return id;
@@ -101,4 +102,13 @@ public class User implements Serializable{
 		this.telephone = telephone;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	
 }

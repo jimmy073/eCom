@@ -3,6 +3,7 @@ package com.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,7 @@ import com.domain.Role;
 import com.domain.User;
 import com.model.CartInfo;
 import com.service.CategoryService;
+import com.service.OrderService;
 import com.service.PrivilegeService;
 import com.service.ProductService;
 import com.utils.Utils;
@@ -41,7 +44,14 @@ public class MainController {
 	private CategoryService categoryService;
 	private ProductService productService;
 	private PrivilegeService privilegeService;
+	private OrderService orderService;
 	
+	
+	@Autowired
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
+	}
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -81,7 +91,11 @@ public class MainController {
 	}
 	
 	@GetMapping("/customerHome")
-	public String customerHome() {
+	public String customerHome(HttpServletRequest request, Model model, Principal p) {
+		CartInfo myCart = Utils.getCartInSession(request);
+		User activeUser = activeUser(p);
+		model.addAttribute("cartForm", myCart);
+		model.addAttribute("outStanding", orderService.customerOutStandings(activeUser));
 		return "customerHome";
 	}
 	
@@ -164,8 +178,9 @@ public class MainController {
 	}
 	
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request, Model model, @ModelAttribute("cartForm") CartInfo cartForm) {
 		CartInfo cartInfo = Utils.getCartInSession(request);
+		//model.addAttribute("cartForm", cartInfo);
 		return "login";
 	}
 	
@@ -284,4 +299,8 @@ public class MainController {
 			return "accessDenied";
 	}
 	
+	private User activeUser(Principal principal) {
+		User activeUser =  userService.findUser(principal.getName());
+		 return activeUser;
+	}
 }

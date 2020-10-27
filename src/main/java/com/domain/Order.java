@@ -17,7 +17,9 @@ public class Order implements Serializable  {
 	private Long id;
 	private Date orderDate;
 	private double amount;
-	private String customerName;
+	@ManyToOne
+	private User customer;
+	private String status;
 	public Long getId() {
 		return id;
 	}
@@ -36,12 +38,21 @@ public class Order implements Serializable  {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public String getCustomerName() {
-		return customerName;
+	
+	public String getStatus() {
+		return status;
 	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+	public User getCustomer() {
+		return customer;
+	}
+	public void setCustomer(User customer) {
+		this.customer = customer;
+	}
+	
+	
 	
 	
 }

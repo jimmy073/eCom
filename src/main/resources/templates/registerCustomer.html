@@ -52,8 +52,14 @@
 			<div class="form-group">
 				<label>Password</label>
 				<input  type="password">
-				<label>confirm Password</label>
-				<input type="password" th:field="*{password}">
+			</div>
+			<div style="margin-right: 250px" class="form-group"> 
+				<label>Address</label>
+				<input type="text" th:field="*{address}">
+			</div>
+			<div style="margin-right: 250px" class="form-group"> 
+				<label>Payment Mode</label>
+				<input type="text" th:field="*{paymentMode}">
 			</div>
 		</div>
 		<input  type="submit" class="btn btn-success sm" value="Sign up" style="margin-right: 20%">

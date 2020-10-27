@@ -1,13 +1,18 @@
 package com.domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-public class Role {
+public class Role implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	@Column(unique = true, nullable = false)

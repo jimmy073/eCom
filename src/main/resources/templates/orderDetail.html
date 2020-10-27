@@ -31,66 +31,28 @@
 </div>
 
 <div class="container">
-	<div style="margin-left: 100%">
-		<a class="btn btn-info" th:href="@{/customer/shoppingCart}">MyCart</a>
-	</div>	
-	<th:block th:if="${cartForm != null && cartForm.cartLines != null && !cartForm.cartLines.empty}">
-		<h3 style="text-align: center">Products in My Cart</h3>
-		<table class="table" style="width: 40%; margin-left: 25%">
+	<th:block th:if="${details !=null && !details.empty}">
+		<h3 style="text-align: center">Order Detail</h3>
+		<table class="table" style="width: 60%; margin-left: 25%">
 			<thead>
 				<tr>
 					<th>Product</th>
-					<th>Quantity</th>
 					<th>Price</th>
+					<th>Quantity</th>
 					<th>Amount</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="line:${cartForm.cartLines}">
-					<td th:text="${line.productInfo.name}"></td>
-					<td th:text="${line.quantity}"></td>
-					<td th:text="${line.productInfo.price}"></td>
-					<td th:text="${line.amount}"></td>
+				<tr th:each="detail:${details}" >
+					<td th:text="${detail.product.productName}"></td>
+					<td th:text="${detail.price}"></td>
+					<td th:text="${detail.quantity}"></td>
+					<td th:text="${detail.amount}"></td>
 				</tr>
 			</tbody>
 		</table>
-		<div class="row">
-			<a class="btn btn-info btn-sm" style="margin-left: 60%" 
-		th:href="@{/customer/shoppingCart}">Edit Cart</a>
-		<a class="btn btn-success btn-sm"  style="margin-left: 4px"
-		th:href="@{/customer/submitCart}">Submit</a>
-		</div>
-	</th:block>
 	
-	<th:block th:if="${outStanding != null && !outStanding.empty}"> 
-		<div style="margin-left: 30%">
-		<h3>OutStanding Orders</h3>
-		<table class="table" style="width: 60%">
-			<thead>
-				<tr>
-					<th>OerderId</th>
-					<th>Date</th>
-					<th>Amount</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="order:${outStanding}">
-					<td th:text="${order.id}"></td>
-					<td th:text="${order.orderDate}"></td>
-					<td th:text="${order.amount}"></td>
-					<td>
-					<a class="btn btn-info btn-xs" 
-					th:href="@{|/customer/orderDetail?orderId=${order.id}|}">detail</a>
-					<a class="btn btn-danger btn-xs" th:href="@{/customer/cancelOrder}">cancel</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-	</th:block>
-		<h3 style="text-align: center">My Co Order</h3>
-	
+	</th:block>	
 </div>
 	
 </body>

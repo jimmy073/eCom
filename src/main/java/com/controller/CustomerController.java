@@ -1,6 +1,9 @@
 package com.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import com.domain.Role;
 import com.domain.User;
 import com.form.CustomerForm;
 import com.model.CartInfo;
+import com.model.CustomerInfo;
 import com.model.ProductInfo;
 import com.service.CategoryService;
 import com.service.OrderService;
@@ -44,6 +48,7 @@ public class CustomerController {
 	private CategoryService categoryService;
 	private ProductService productService;
 	private OrderService orderService;
+	
 	
 	@Autowired
 	private CustomerFormValidator customerFormValidator;
@@ -102,8 +107,8 @@ public class CustomerController {
 	@PostMapping("/saveCustomer")
 	public String saveCustomer(Model model,@Valid User user, BindingResult result, 
 			HttpServletRequest request ) {
-		Role role = new Role("ROLE_CUSTOMER");
-		roleService.saveRole(role);
+		Role role = roleService.findRole("ROLE_CUSTOMER");
+		//roleService.saveRole(role);
 		user.setRole(role);
 		userService.saveUser(user);
 		CartInfo cartInfo = Utils.getCartInSession(request);
@@ -178,7 +183,8 @@ public class CustomerController {
 	}
 		
 	@GetMapping("/addToCart/{id}")
-	public String addToCart(HttpServletRequest request,Model model, @PathVariable(value = "id") long id) {
+	public String addToCart(HttpServletRequest request,Model model, 
+			@PathVariable(value = "id") long id) {
 		Product product = productService.findProduct(id);
 		
 		if(product!=null) {
@@ -188,7 +194,6 @@ public class CustomerController {
 		}
 		
 		model.addAttribute("product", product);
-		model.addAttribute("cart", request.getAttribute("myCart"));
 		return "redirect:/customer/shoppingCart";
 	}
 	
@@ -217,13 +222,45 @@ public class CustomerController {
 			ProductInfo productInfo = new ProductInfo(product);
 			cartInfo.removeProduct(productInfo);
 		}
+		
 		return "redirect:/customer/shoppingCart";
 	}
 	
 	@RequestMapping({"/checkout"})
 	public String checkout(HttpServletRequest request, Model model) {
 			CartInfo cartInfo = Utils.getCartInSession(request);
+			model.addAttribute("cartForm", cartInfo);
 		return "redirect:/login";
 	}
 	
+	@RequestMapping("/submitCart")
+	public String submitCart(HttpServletRequest request, Model model, Principal p) {
+		User user = activeUser(p);
+		CartInfo cartInfo = Utils.getCartInSession(request);
+		if(cartInfo==null) {
+			return "redirect:/customer/choppingCart";
+		}
+		CustomerInfo customerInfo = new CustomerInfo();
+		customerInfo.setEmail(user.getUsername());
+		customerInfo.setName(user.getFirstName()+" "+user.getLastName());
+		customerInfo.setAddress("Kigali");
+		customerInfo.setPhone(user.getTelephone());;
+		cartInfo.setCustomerInfo(customerInfo);
+		orderService.createOrder(cartInfo,user);
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return "shoppingCart";
+	}
+	
+	public User activeUser(Principal principal) {
+		User activeUser =  userService.findUser(principal.getName());
+		 return activeUser;
+	}
+	
+	@RequestMapping("/orderDetail")
+	public String viewOrderDetail(Model model, @RequestParam(value = "orderId") long orderId) {
+		Order order = orderService.findOrder(orderId);
+		model.addAttribute("details", orderService.OrdersDetail(order));
+		return "orderDetail";
+	}
 }

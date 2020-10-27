@@ -72,14 +72,7 @@
             <div style="clear: both"></div>
             <input class="btn btn-success btn-sm" type="submit" value="Update Quantity" />
             <a class="btn btn-warning btn-sm" th:href="@{/customer/checkout}">Check_Out</a>
-            <th:block sec:authorize="isAuthenticated()">
-            	
-            	<a class="btn btn-primary btn-sm" th:href="@{/customer/allProducts}">Continue Buy</a>
-            </th:block>
-            
-            <th:block sec:authorize="!isAuthenticated()">
-            	<a class="btn btn-primary btn-sm" th:href="@{/customer/allProducts}">Continue Buy</a>
-            </th:block>
+            <a class="btn btn-primary btn-sm" th:href="@{/customer/allProducts}">Continue Buy</a>
          </form>
 
 	</th:block>
