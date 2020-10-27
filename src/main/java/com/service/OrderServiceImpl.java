@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepo orderRepo;
 	private ProductService productServise;
 	private OrderDetailRepo detailRepo;
-	
+	private NotificationService notificationService;
 	
 	@Autowired
 	public void setDetailRepo(OrderDetailRepo detailRepo) {
@@ -39,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	public void setOrderRepo(OrderRepo orderRepo) {
 		this.orderRepo = orderRepo;
+	}
+	
+	@Autowired
+	public void setNorificationService(NotificationService notificationService) {
+		this.notificationService = notificationService;
 	}
 
 	@Override
@@ -79,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
 			detail.setProduct(product);
 			
 			detailRepo.save(detail);
+			notificationService.sendNotification(user, "createOrder", order);
 		}
 		return order;
 	}
@@ -117,6 +123,27 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 		return orderDetails;
+	}
+
+	@Override
+	public void cancelOrder(Order order) {
+		order.setStatus("Canceled");
+		orderRepo.save(order);
+		notificationService.sendNotification(order.getCustomer(), "cancel", order);
+	}
+
+	@Override
+	public List<Order> customerOrders(User user) {
+		List<Order> orders = orders();
+		List<Order> userOrders = new ArrayList<>();
+		
+		for(Order order:orders) {
+			if(order.getCustomer().equals(user)) {
+				userOrders.add(order);
+			}
+		}
+		
+		return userOrders;
 	}
 
 }

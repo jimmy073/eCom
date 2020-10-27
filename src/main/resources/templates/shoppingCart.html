@@ -35,6 +35,7 @@
 	</th:block>
 	
 	<th:block th:if="${cartForm != null && cartForm.cartLines != null && !cartForm.cartLines.empty}">
+		<h3>Products in Cart</h3>
 		<form th:action="@{/customer/shoppingCart}" method="POST" th:object="${cartForm}">
 			 <div
                         th:each="cartLineInfo, varStatus : ${cartForm.cartLines}">
@@ -67,6 +68,7 @@
                         </a>
                      </li>
                   </ul>
+              
                </div>
              
             <div style="clear: both"></div>

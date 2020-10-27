@@ -96,6 +96,7 @@ public class MainController {
 		User activeUser = activeUser(p);
 		model.addAttribute("cartForm", myCart);
 		model.addAttribute("outStanding", orderService.customerOutStandings(activeUser));
+		model.addAttribute("userOrders", orderService.customerOrders(activeUser));
 		return "customerHome";
 	}
 	

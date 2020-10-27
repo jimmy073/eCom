@@ -26,5 +26,9 @@ public interface OrderService {
 	
 	List<Order> customerOutStandings(User user);
 	
+	List<Order> customerOrders(User user);
+	
 	List<OrderDetail> OrdersDetail(Order order);
+	
+	void cancelOrder(Order order);
 }

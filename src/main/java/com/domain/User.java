@@ -33,6 +33,7 @@ public class User implements Serializable{
 	@ManyToOne
 	private Role role;
 	private String address;
+	private String paymentMode;
 	
 	public Long getId() {
 		return id;
@@ -108,6 +109,14 @@ public class User implements Serializable{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
 	}
 	
 	

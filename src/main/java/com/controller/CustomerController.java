@@ -263,4 +263,12 @@ public class CustomerController {
 		model.addAttribute("details", orderService.OrdersDetail(order));
 		return "orderDetail";
 	}
+	
+	@RequestMapping("/cancelOrder")
+	public String cancelOrder(Model model, @RequestParam(value = "orderId") long orderId) {
+		Order order = orderService.findOrder(orderId);
+		orderService.cancelOrder(order);
+		model.addAttribute("details", orderService.OrdersDetail(order));
+		return "orderDetail";
+	}
 }
