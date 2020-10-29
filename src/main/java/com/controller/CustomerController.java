@@ -271,4 +271,10 @@ public class CustomerController {
 		model.addAttribute("details", orderService.OrdersDetail(order));
 		return "orderDetail";
 	}
+	
+	@RequestMapping("/search")
+	public String search(@RequestParam(value = "search", defaultValue = "") String search,
+			Model model) {
+		return "";
+	}
 }

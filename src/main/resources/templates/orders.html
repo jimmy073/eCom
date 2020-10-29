@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<title>eCommerce Products Categories</title>
+		<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+<th:block th:include="/_adminheader"></th:block>
+
+<div class="container">
+	
+	<div style="margin-left: 25%; margin-top: 3%">
+		
+		<div style="margin-left: 20%">
+			<h3 th:if="${all==true}">ALL ORDERS</h3>
+			<h3 th:if="${all!=true}" th:text="${customer.firstName}+ 'ORDERS' "></h3>
+		</div>
+		
+		<th:block th:if="${all==true}">
+		<a class="btn btn-success btn-sm" 
+		th:href="@{/orders}">All Orders</a>
+		<a class="btn btn-danger btn-sm"
+		th:href="@{/canceledOrders}">Canceled Orders</a>
+		<a class="btn btn-info btn-sm"
+		th:href="@{/outStandingOrders}">OutStanding Orders</a>
+		</th:block>
+		
+		<th:block th:if="${all!=true}">
+		<a class="btn btn-success btn-sm" 
+		th:href="@{|/customerOrders?custId=${customer.id}|}">All Orders</a>
+		<a class="btn btn-danger btn-sm"
+		th:href="@{|/customerCanceledOrders?custId=${customer.id}|}">Canceled Orders</a>
+		<a class="btn btn-info btn-sm"
+		th:href="@{|/customerOutStandingOrders?custId=${customer.id}|}">OutStanding Orders</a>
+		</th:block>
+		
+	</div>
+
+	<th:block> 
+		<div style="margin-left: 30%">
+		<h3 th:if="${all!=true}"></h3>
+		<table class="table" style="width: 70%">
+			<thead>
+				<tr>
+					<th>OerderId</th>
+					<th>Date</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="order:${allOrders}">
+					<td th:text="${order.id}"></td>
+					<td th:text="${order.orderDate}"></td>
+					<td th:text="${order.amount}"></td>
+					<td th:text="${order.status}"></td>
+					<td>
+					<a class="btn btn-info btn-xs" 
+					th:href="@{|/customer/orderDetail?orderId=${order.id}|}">detail</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</th:block>
+</div>
+</body>
+</html>

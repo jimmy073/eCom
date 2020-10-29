@@ -22,12 +22,12 @@ public interface OrderService {
 	
 	Order findOrder(Long id);
 	
-	List<Order> OrderByStatus(String status);
+	List<Order> orderByStatus(String status);
 	
-	List<Order> customerOutStandings(User user);
+	List<Order> customerOrdersByStatus(User user, String status);
 	
 	List<Order> customerOrders(User user);
-	
+
 	List<OrderDetail> OrdersDetail(Order order);
 	
 	void cancelOrder(Order order);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,38 +66,42 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public Order createOrder(CartInfo cartInfo, User user) {
 		Order order = new Order();
-		order.setAmount(cartInfo.getAmountTotal());
-		order.setCustomer(user);
-		order.setOrderDate(new Date());
-		order.setStatus("OutStanding");
-		orderRepo.save(order);
-		List<CartLineInfo> lines = cartInfo.getCartLines();
-		for(CartLineInfo line:lines) {
-			OrderDetail detail = new OrderDetail();
-			detail.setAmount(line.getAmount());
-			detail.setOrder(order);
-			detail.setQuantity(line.getQuantity());
-			detail.setPrice(line.getProductInfo().getPrice());
-			
-			Long pcode = line.getProductInfo().getCode();
-			Product product = this.productServise.findProduct(pcode);
-			
-			detail.setProduct(product);
-			
-			detailRepo.save(detail);
-			notificationService.sendNotification(user, "createOrder", order);
+		if(user==null) {
+			throw new RuntimeException("USER NOT FOUND");
+		}else {
+			order.setAmount(cartInfo.getAmountTotal());
+			order.setCustomer(user);
+			order.setOrderDate(new Date());
+			order.setStatus("OutStanding");
+			orderRepo.save(order);
+			List<CartLineInfo> lines = cartInfo.getCartLines();
+			for(CartLineInfo line:lines) {
+				OrderDetail detail = new OrderDetail();
+				detail.setAmount(line.getAmount());
+				detail.setOrder(order);
+				detail.setQuantity(line.getQuantity());
+				detail.setPrice(line.getProductInfo().getPrice());
+				
+				Long pcode = line.getProductInfo().getCode();
+				Product product = this.productServise.findProduct(pcode);
+				
+				detail.setProduct(product);
+				
+				detailRepo.save(detail);
+				notificationService.sendNotification(user, "createOrder", order);
+			}
 		}
 		return order;
 	}
 
 	@Override
-	public List<Order> OrderByStatus(String status) {
+	public List<Order> orderByStatus(String status) {
 		return orderRepo.findByStatus(status);
 	}
 
 	@Override
-	public List<Order> customerOutStandings(User user) {
-		List<Order> outStandings = OrderByStatus("OutStanding");
+	public List<Order> customerOrdersByStatus(User user, String status) {
+		List<Order> outStandings = orderByStatus(status);
 		List<Order> userOutStandings = new ArrayList<>();
 		
 		for(Order order:outStandings) {
@@ -136,14 +141,18 @@ public class OrderServiceImpl implements OrderService {
 	public List<Order> customerOrders(User user) {
 		List<Order> orders = orders();
 		List<Order> userOrders = new ArrayList<>();
-		
-		for(Order order:orders) {
-			if(order.getCustomer().equals(user)) {
-				userOrders.add(order);
+		if(user==null) {
+			throw new RuntimeException("UserNotFound");
+		}else {
+			for(Order order:orders) {
+				if(order.getCustomer().getId() == (user.getId())) {
+					userOrders.add(order);
+				}
 			}
 		}
 		
 		return userOrders;
 	}
+
 
 }

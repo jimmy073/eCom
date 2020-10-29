@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.auth.RoleService;
 import com.auth.UserService;
 import com.domain.Category;
+import com.domain.Order;
 import com.domain.Privilege;
 import com.domain.Product;
 import com.domain.Role;
@@ -95,7 +97,7 @@ public class MainController {
 		CartInfo myCart = Utils.getCartInSession(request);
 		User activeUser = activeUser(p);
 		model.addAttribute("cartForm", myCart);
-		model.addAttribute("outStanding", orderService.customerOutStandings(activeUser));
+		model.addAttribute("outStanding", orderService.customerOrdersByStatus(activeUser, "OutStanding"));
 		model.addAttribute("userOrders", orderService.customerOrders(activeUser));
 		return "customerHome";
 	}
@@ -134,6 +136,7 @@ public class MainController {
 	@GetMapping("/users")
 	public String users(Model model) {
 		model.addAttribute("users", userService.users());
+		model.addAttribute("order", false);
 		return "users";
 	}
 
@@ -298,6 +301,76 @@ public class MainController {
 	@GetMapping("/access-denied")
 	public String accessDenied() {
 			return "accessDenied";
+	}
+	
+	@GetMapping("/customers")
+	public String customers(Model model) {
+		Role role = roleService.findRole("ROLE_CUSTOMER");
+		model.addAttribute("users", userService.users(role));
+		model.addAttribute("order", true);
+		return "users";
+	}
+	
+	@GetMapping("/customerOrders")
+	public String customerOrders(Model model, @RequestParam(value = "custId")long custId) {
+		User user = userService.findUser(custId);
+		List<Order> customerOrders = orderService.customerOrders(user);
+		model.addAttribute("allOrders", customerOrders);
+		model.addAttribute("all", false);
+		model.addAttribute("customer", user);
+		return "orders";
+	}
+	
+	@GetMapping("/customerOutStandingOrders")
+	public String customerOutStandingOrders(Model model, @RequestParam(value = "custId")long custId) {
+		User user = userService.findUser(custId);
+		List<Order> customerOrders = orderService.customerOrdersByStatus(user, "OutStanding");
+		model.addAttribute("allOrders", customerOrders);
+		model.addAttribute("all", false);
+		model.addAttribute("customer", user);
+		return "orders";
+	}
+	
+	@GetMapping("/customerCanceledOrders")
+	public String customerCanceledOrders(Model model, @RequestParam(value = "custId")long custId) {
+		User user = userService.findUser(custId);
+		List<Order> customerOrders = orderService.customerOrdersByStatus(user, "Canceled");
+		model.addAttribute("allOrders", customerOrders);
+		model.addAttribute("all", false);
+		model.addAttribute("customer", user);
+		return "orders";
+	}
+	
+	@GetMapping("/orders")
+	public String orders(Model model) {
+		List<Order> orders = orderService.orders();
+		model.addAttribute("allOrders", orders);
+		model.addAttribute("all", true);
+		return "orders";
+	}
+	
+	@GetMapping("/outStandingOrders")
+	public String outStandingOrders(Model model) {
+		List<Order> orders = orderService.orderByStatus("OutStanding");
+		model.addAttribute("allOrders", orders);
+		model.addAttribute("all", true);
+		return "orders";
+	}
+	
+	@GetMapping("/canceledOrders")
+	public String canceledOrders(Model model) {
+		List<Order> orders = orderService.orderByStatus("Canceled");
+		model.addAttribute("allOrders", orders);
+		model.addAttribute("all", true);
+		return "orders";
+	}
+	
+	@GetMapping("/customerProfile")
+	public String customerProfile(Model model, @RequestParam(value = "custId")long custId) {
+		User user = userService.findUser(custId);
+		List<Order> customerOrders = orderService.customerOrdersByStatus(user, "Canceled");
+		model.addAttribute("customer", user);
+		return "profile";
 	}
 	
 	private User activeUser(Principal principal) {

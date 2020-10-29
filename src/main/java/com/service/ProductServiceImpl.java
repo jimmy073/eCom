@@ -64,6 +64,12 @@ public class ProductServiceImpl implements ProductService {
 		return productRepo.findByCategory(category, pageable);
 	}
 
+	@Override
+	public Page<Product> findProductPaginated(String searchKey, int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return productRepo.findByProductName(searchKey, pageable);
+	}
+
 		
 	
 }

@@ -27,4 +27,6 @@ public interface ProductService {
 	
 	Page<Product> categoryProductsPaginated(Category category, int pageNo, int pageSize);
 	
+	Page<Product> findProductPaginated(String searchKey, int pageNo, int pageSize);
+	
 }

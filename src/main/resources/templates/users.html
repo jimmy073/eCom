@@ -31,8 +31,8 @@
 <div class="container" >
 	
 	<div style="margin-left: 20%">
-	<h2 style="text-align: left; margin-left: 70px">USER MaNAGEMENT</h2>
-	
+	<h2 th:if="${order!=true}" style="text-align: left; margin-left: 70px">USER MANAGEMENT</h2>
+	<h2 th:if="${order==true}" style="text-align: left; margin-left: 70px">CUSTOMER MANAGEMENT</h2>
 	<table border="1" class="table" style="width: 60%">
 		<thead>
 			<tr>
@@ -47,7 +47,13 @@
 				<td th:text="${user.username}"></td>
 				<td th:text="${user.firstName}+' '+${user.lastName}"></td>
 				<td th:text="${user.telephone}"></td>
-				<td><a class="btn btn-info btn-xs" th:href="@{/userRoles/{id} (id=${user.id}) }">Roles</a></td>
+				<td> <a th:if="${order!=true}" class="btn btn-info btn-xs" 
+					 th:href="@{/userRoles/{id} (id=${user.id}) }">Roles</a>
+					 <a th:if="${order==true}" class="btn btn-info btn-xs"
+					 th:href="@{|/customerOrders?custId=${user.id}|}">Orders</a>
+					 <a class="btn btn-success btn-xs" 
+					 th:href="@{|/customerProfile?custId=${user.id}|}">Profile</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
