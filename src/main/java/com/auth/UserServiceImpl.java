@@ -90,6 +90,14 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByRole(role);
 	}
 
+	@Override
+	public List<User> users(String nameOrEmail) {
+		String username = nameOrEmail;
+		String lastName = nameOrEmail;
+		String firstName = nameOrEmail;
+		return userRepo.findByUsernameOrFirstNameOrLastName(username, firstName, lastName);
+	}
+
 
 
 }

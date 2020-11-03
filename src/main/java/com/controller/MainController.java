@@ -377,4 +377,13 @@ public class MainController {
 		User activeUser =  userService.findUser(principal.getName());
 		 return activeUser;
 	}
+	
+	@GetMapping("/userSearch")
+	public String findUsersByUserNameOrNames(Model model, @RequestParam(value = "search") 
+	String search) {
+		Role role = roleService.findRole("ROLE_CUSTOMER");
+		model.addAttribute("users", userService.users(search));
+		model.addAttribute("order", true);
+		return "users";
+	}
 }

@@ -275,6 +275,13 @@ public class CustomerController {
 	@RequestMapping("/search")
 	public String search(@RequestParam(value = "search", defaultValue = "") String search,
 			Model model) {
-		return "";
+		int pageSize = 6;
+		int pageNo =1;
+		Page<Product> prodsPage = productService.findProductPaginated(search,pageNo, pageSize);
+		model.addAttribute("totalItems", prodsPage.getTotalElements());
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages", prodsPage.getTotalPages());
+		model.addAttribute("products", prodsPage.getContent());
+		return "allProducts";
 	}
 }

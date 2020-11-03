@@ -33,6 +33,12 @@
 	<div style="margin-left: 20%">
 	<h2 th:if="${order!=true}" style="text-align: left; margin-left: 70px">USER MANAGEMENT</h2>
 	<h2 th:if="${order==true}" style="text-align: left; margin-left: 70px">CUSTOMER MANAGEMENT</h2>
+	<form th:action="@{/userSearch}" method="get" th:object="${user}">
+	<div class="row" style="margin-bottom: 0.5%; margin-left: 0.1%">
+		<input class="form-control" style="width: 18%" 
+		placeholder="Search User" name="search" id="search">
+		<input type="submit" class="btn btn-primary btn-xs"  value="Search">
+	</div></form>
 	<table border="1" class="table" style="width: 60%">
 		<thead>
 			<tr>

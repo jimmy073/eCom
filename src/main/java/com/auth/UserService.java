@@ -21,6 +21,8 @@ public interface UserService extends UserDetailsService {
 	
 	List<User> users(Role role);
 	
+	List<User> users(String nameOrEmail);
+	
 	User addRole(long uid, long rid);
 //	
 //	User removeRole(long uid, long rid);
